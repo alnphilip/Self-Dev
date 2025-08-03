@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import supabase from "./helper/supabaseClient";
+import "./App.css";
 
 function App() {
   useEffect(() => { fetchTodo() }, [])
@@ -43,39 +44,45 @@ function App() {
 
 
 
-return (
-    <div>
-      <h1>Todo App</h1>
+  return (
+    <div className="todo-container">
+      <h1 className="todo-header">Todo App</h1>
 
-      <div>
+      <div className="todo-input-container">
         <input
+          className="todo-input"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Add new todo"
+          onKeyPress={(e) => e.key === 'Enter' && addTodo()}
         />
-        <button onClick={addTodo}>Add</button>
+        <button className="btn btn-add" onClick={addTodo}>Add Task</button>
       </div>
 
-      <div>
+      <div className="todo-section">
         <h2>Active Tasks</h2>
         {todos.filter(t => !t.completed).map(todo => (
-          <div key={todo.id}>
-            <span>{todo.title}</span>
-            <button onClick={() => completeTodo(todo.id)}>Complete</button>
-            <button onClick={() => updateTodo(todo.id, prompt("Update task:", todo.title))}>
-              Edit
-            </button>
-            <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+          <div key={todo.id} className="todo-item">
+            <span className="todo-title">{todo.title}</span>
+            <div className="todo-actions">
+              <button className="btn btn-complete" onClick={() => completeTodo(todo.id)}>Complete</button>
+              <button className="btn btn-edit" onClick={() => updateTodo(todo.id, prompt("Update task:", todo.title))}>
+                Edit
+              </button>
+              <button className="btn btn-delete" onClick={() => deleteTodo(todo.id)}>Delete</button>
+            </div>
           </div>
         ))}
       </div>
 
-      <div>
+      <div className="todo-section">
         <h2>Completed Tasks</h2>
         {todos.filter(t => t.completed).map(todo => (
-          <div key={todo.id}>
-            <span style={{ textDecoration: 'line-through' }}>{todo.title}</span>
-            <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+          <div key={todo.id} className="todo-item">
+            <span className="todo-title todo-completed">{todo.title}</span>
+            <div className="todo-actions">
+              <button className="btn btn-delete" onClick={() => deleteTodo(todo.id)}>Delete</button>
+            </div>
           </div>
         ))}
       </div>
